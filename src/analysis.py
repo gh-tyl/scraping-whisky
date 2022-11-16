@@ -2,13 +2,13 @@
 import pandas as pd
 
 # %%
-path = "/src/data/WhiskyDatabase.csv"
+path = "./data/WhiskyDatabase.csv"
 df = pd.read_csv(path)
 # %%
 df = df.dropna()
 df = df.reset_index(drop=True)
 # write not nan df to csv file
-path = "/src/data/WhiskyDatabase_not_nan.csv"
+path = "./data/WhiskyDatabase_not_nan.csv"
 df.to_csv(path, index=False)
 
 # %%
@@ -52,14 +52,48 @@ df
 df = df.sort_values(by=["Primary Score"], ascending=False)
 df = df.reset_index(drop=True)
 # %%
-df_200 = df[:200]
+df_200 = df[:250]
 
 # %%
 df_200.groupby("Country").count()
 
 # %%
 # write 100 random rows to csv file
-path = "/src/data/WhiskyDatabase_200.csv"
-df.to_csv(path, index=False)
+path = "./data/WhiskyDatabase_250.csv"
+df_200.to_csv(path, index=False)
 
 # %%
+import pandas as pd
+
+# read csv file
+path = "./data/WhiskyDatabase_200_with_image.csv"
+df = pd.read_csv(path)
+# %%
+# drop rows with nan
+df = df.dropna()
+df = df.reset_index(drop=True)
+# %%
+# drop column Primary Score
+df = df.drop(columns=["Primary Score"])
+# %%
+# convert Cost to int
+# $ is for whiskies <$30 CAD
+# $$ for whiskies between $30~$50 CAD
+# $$$ for whiskies between $50-$70 CAD
+# $$$$ for whiskies between $70~$125 CAD
+# $$$$$ for whiskies between $125~$300 CAD
+# $$$$$+ refers to all whiskies >$300 CAD.
+df["Cost"] = df["Cost"].replace(
+    {"$": 30, "$$": 50, "$$$": 70, "$$$$": 125, "$$$$$": 300, "$$$$$+": 300}
+)
+
+# %%
+# write csv file
+path = "./data/WhiskyDatabase_200_replace_cost.csv"
+df.to_csv(path, index=False)
+# %%
+# convert csv to json
+import json
+
+path = "./data/WhiskyDatabase_200_replace_cost.json"
+df.to_json(path, orient="records")

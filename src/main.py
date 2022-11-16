@@ -4,7 +4,7 @@ from scraping import Scraping
 
 
 def main():
-    path = "./data/WhiskyDatabase_200.csv"
+    path = "./data/WhiskyDatabase_250.csv"
     df = pd.read_csv(path)
 
     scraping = Scraping()
