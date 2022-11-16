@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  api:
+    container_name: pien
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    working_dir: ${WORKDIR}
+    volumes:
+      - .${WORKDIR}:${WORKDIR}
+    command: /bin/bash
+    env_file:
+      - ./.env
+    environment:
+      - LANG=${LANG}
+      - PYTHONUNBUFFERED=${PYTHONUNBUFFERED}
+      - PYTHONIOENCODING=${PYTHONIOENCODING}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    tty: true
