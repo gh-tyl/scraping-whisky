@@ -34,4 +34,4 @@ pythonenv*
 */.ipynb_checkpoints/*
 
 # image files
-data/images
+src/data/images
